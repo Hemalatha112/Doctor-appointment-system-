@@ -1,0 +1,96 @@
+import java.util.*;
+
+public class FoodOrderSystem {
+    static Scanner sc = new Scanner(System.in);
+
+    static String[] foodItems = {"Burger", "Pizza", "Sandwich", "Pasta", "French Fries"};
+    static int[] prices = {120, 250, 100, 180, 80};
+    static int[] cartQty = new int[foodItems.length];
+
+    public static void main(String[] args) {
+        int choice;
+        System.out.println("\n==============================");
+        System.out.println("      FOOD ORDER SYSTEM");
+        System.out.println("==============================");
+
+        do {
+            System.out.println("\nMenu:");
+            System.out.println("1. View Food Menu");
+            System.out.println("2. Add to Cart");
+            System.out.println("3. View Cart");
+            System.out.println("4. Checkout & Bill");
+            System.out.println("5. Exit");
+            System.out.print("Enter your choice: ");
+            choice = sc.nextInt();
+
+            switch (choice) {
+                case 1: showMenu(); break;
+                case 2: addToCart(); break;
+                case 3: viewCart(); break;
+                case 4: checkout(); break;
+                case 5: System.out.println("Thank you! Visit Again!"); break;
+                default: System.out.println("Invalid choice!");
+            }
+        } while (choice != 5);
+    }
+
+    static void showMenu() {
+        System.out.println("\n---- FOOD MENU ----");
+        for(int i = 0; i < foodItems.length; i++) {
+            System.out.println((i+1) + ". " + foodItems[i] + " - ₹" + prices[i]);
+        }
+    }
+
+    static void addToCart() {
+        showMenu();
+        System.out.print("\nEnter item number to add: ");
+        int item = sc.nextInt();
+        if (item >= 1 && item <= foodItems.length) {
+            System.out.print("Enter quantity: ");
+            int qty = sc.nextInt();
+            cartQty[item - 1] += qty;
+            System.out.println(qty + " " + foodItems[item-1] + "(s) added to cart!");
+        } else {
+            System.out.println("Invalid item!");
+        }
+    }
+
+    static void viewCart() {
+        System.out.println("\n---- CART ----");
+        int total = 0, count = 0;
+
+        for(int i = 0; i < foodItems.length; i++) {
+            if(cartQty[i] > 0) {
+                int itemTotal = prices[i] * cartQty[i];
+                total += itemTotal;
+                count++;
+                System.out.println(foodItems[i] + " x " + cartQty[i] + " = ₹" + itemTotal);
+            }
+        }
+        if(count == 0)
+            System.out.println("Cart is empty!");
+        else
+            System.out.println("Total: ₹" + total);
+    }
+
+    static void checkout() {
+        System.out.println("\n---- BILL ----");
+        int total = 0;
+
+        for(int i = 0; i < foodItems.length; i++) {
+            if(cartQty[i] > 0) {
+                int itemTotal = prices[i] * cartQty[i];
+                total += itemTotal;
+                System.out.println(foodItems[i] + " x " + cartQty[i] + " = ₹" + itemTotal);
+            }
+        }
+
+        if(total == 0) {
+            System.out.println("Cart is empty! Add items first.");
+        } else {
+            System.out.println("-------------------");
+            System.out.println("Final Total: ₹" + total);
+            System.out.println("Order Placed Successfully!");
+        }
+    }
+}
